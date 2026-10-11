@@ -175,6 +175,7 @@
   .pick-tools{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--muted);flex-wrap:wrap;gap:8px;margin-top:14px;}
   .link-btn{background:none;border:none;color:var(--primary);font-weight:700;cursor:pointer;font-family:inherit;padding:0;}
   .intro{text-align:left;line-height:1.5;margin:0;}
+  .book-ref{display:inline-block;margin:0 0 10px;padding:6px 12px;border-radius:10px;background:var(--primary-soft);color:var(--primary-dark);font-size:.88rem;font-weight:700;}
   .muted-note{font-size:.9rem;color:var(--muted);margin:8px 0 0;}
   .practice-title{margin:26px 0 0;padding-top:18px;border-top:2px solid var(--line);color:var(--primary-dark);}
   .breakdown{text-align:left;display:grid;gap:8px;margin:16px 0;}
@@ -676,7 +677,7 @@ const LESSONS = [
 ];
 const READING = 13;
 const Q = [];
-const openQ = (lesson, spec) => Q.push({ lesson, open:true, render(c,a){ intro(c, qi(spec.q)); renderOpen(c, spec, a); } });
+const openQ = (lesson, spec) => Q.push({ lesson, book:spec.book, open:true, render(c,a){ intro(c, qi(spec.q)); renderOpen(c, spec, a); } });
 
 /* ---------- 1. Świat przedstawiony i narrator (Moje lato z szablozębnym) ---------- */
 openQ(1,{ q:'Kto to jest narrator?',
@@ -702,35 +703,35 @@ Q.push({ lesson:1,
     renderOptions(c, opts('osobami, które biorą udział w wydarzeniach','osobami, które napisały książkę','osobami, które czytają książkę','tylko postaciami ze zdjęć'), a, true);
   }
 });
-Q.push({ lesson:1,
+Q.push({ book:'„Moje lato z szablozębnym”, W. Kurosz – s. 12–14', lesson:1,
   hint:'W „Moim lecie z szablozębnym" o wydarzeniach opowiada <b>Antek</b> – jeden z bohaterów (mówi „my", „nasz"). Weronika Kurosz to autorka, która tę historię wymyśliła.',
   render(c,a){
     intro(c, qi('Kto jest narratorem w opowiadaniu „Moje lato z szablozębnym"?'));
     renderOptions(c, opts('Antek – jeden z bohaterów','Weronika Kurosz – autorka','ciocia Larysa','rodzice dzieci'), a, true);
   }
 });
-Q.push({ lesson:1,
+Q.push({ book:'„Moje lato z szablozębnym”, W. Kurosz – s. 12–14', lesson:1,
   hint:'Mama powiedziała, że <b>prawo nie pozwala</b>, aby dziewięciolatek i sześciolatka przez dwa tygodnie sami dawali sobie radę. Rodzice jechali na plener, a dziadkowie do znajomych we Francji.',
   render(c,a){
     intro(c, qi('Dlaczego Antek i Ulka nie mogli sami zostać w domu na czas wyjazdu rodziców?'));
     renderOptions(c, opts('bo prawo nie pozwala, żeby tak małe dzieci przez dwa tygodnie same dawały sobie radę','bo bali się zostać sami w nocy','bo zepsuł się zamek w drzwiach','bo ciocia Larysa kazała im do siebie przyjechać'), a, true);
   }
 });
-Q.push({ lesson:1,
+Q.push({ book:'„Moje lato z szablozębnym”, W. Kurosz – s. 12–14', lesson:1,
   hint:'Opiekę przejęła <b>ciocia Larysa</b> – ciotka taty („ciociobabcia"), nauczycielka matematyki, która nigdy się nie uśmiechała i narzekała na uczniów.',
   render(c,a){
     intro(c, qi('Kto zaopiekował się Antkiem i Ulką w czasie wyjazdu rodziców?'));
     renderOptions(c, opts('ciocia Larysa – ciotka taty, nauczycielka matematyki','dziadkowie, którzy wrócili z Francji','sąsiadka z dołu','starsza kuzynka'), a, true);
   }
 });
-Q.push({ lesson:1,
+Q.push({ book:'„Moje lato z szablozębnym”, W. Kurosz – s. 12–14', lesson:1,
   hint:'<b>Plener</b> to tworzenie dzieł (np. rzeźb, obrazów) w otoczeniu przyrody. Rodzice Antka i Ulki są artystami rzeźbiarzami.',
   render(c,a){
     intro(c, qi('Rodzice Antka i Ulki co roku wyjeżdżają na plener. Co to znaczy?'));
     renderOptions(c, opts('jadą tworzyć dzieła w otoczeniu przyrody','jadą na wakacje nad morze','jadą na zakupy do dużego miasta','jadą odwiedzić znajomych'), a, true);
   }
 });
-Q.push({ lesson:1,
+Q.push({ book:'„Moje lato z szablozębnym”, W. Kurosz – s. 12–14', lesson:1,
   hint:'W liście z wakacji dzieci proponują, żeby w przyszłym roku ciocia znów się nimi zaopiekowała – czyli <b>polubiły ciocię Larysę</b>, choć na początku się jej bały.',
   render(c,a){
     intro(c, qi('O czym świadczy list, który Antek i Ulka wysłali ciotce z wakacji?'));
@@ -749,14 +750,14 @@ Q.push({ lesson:2,
     renderOptions(c, opts('Nie – autor napisał wiersz, a podmiot liryczny to osoba, która w nim mówi','Tak – to zawsze ta sama osoba','Tak – ale tylko w wierszach o dzieciach','Nie – podmiot liryczny to osoba, która czyta wiersz'), a, true);
   }
 });
-Q.push({ lesson:2,
+Q.push({ book:'„Ja”, M. Rusinek – s. 16', lesson:2,
   hint:'Podmiot liryczny w wierszu „Ja" to <b>dziecko</b>. Dorośli pytają je, kim będzie, a ono odpowiada, że to pytanie z błędem, bo <b>już jest</b> („ja już przecież jessstem!") – jest sobą już teraz.',
   render(c,a){
     intro(c, qi('Dlaczego w wierszu M. Rusinka „Ja" podmiot liryczny uważa pytanie „kim będę?" za błędne?'));
     renderOptions(c, opts('bo on już jest kimś – jest sobą teraz','bo nie lubi rozmawiać z dorosłymi','bo nie wie, co to znaczy „być"','bo pytanie zadano mu w złym języku'), a, true);
   }
 });
-Q.push({ lesson:2,
+Q.push({ book:'„Ja”, M. Rusinek – s. 16', lesson:2,
   hint:'„Ja zamiar mam być – mną." Podmiot liryczny chce być <b>sobą</b>. W wierszu są też trudne słowa: <b>wdzianko</b> – ubranie, <b>mną</b> – gniotą.',
   render(c,a){
     const v=Math.random()<.5;
@@ -936,7 +937,7 @@ for(let k=0;k<2;k++) Q.push({ lesson:5,
     renderWordPick(c, ws(pick(EPI,1)[0]), a);
   }
 });
-Q.push({ lesson:5,
+Q.push({ book:'„Autoportret”, W. Chotomska – s. 26', lesson:5,
   hint:'Osoba mówiąca w wierszu Wandy Chotomskiej „Autoportret" to <b>szatynka</b> (kobieta o ciemnych włosach) o <b>piwnych oczach</b>, z <b>siedmioma piegami</b> na nosie, ma <b>metr sześćdziesiąt dwa</b> wzrostu i waży 58 kg. Nie umie malować, a zdjęcia jej nie wychodzą – dlatego <b>opisuje się słowami</b>.',
   render(c,a){
     const v=rnd(0,3);
@@ -958,24 +959,24 @@ Q.push({ lesson:5,
 });
 
 /* ---------- 6. Dlaczego warto być sobą? (M. Piquemal „Nauki mędrca") ---------- */
-Q.push({ lesson:6,
+Q.push({ book:'„Nauki mędrca”, M. Piquemal – s. 29–30', lesson:6,
   hint:'Dzień 1: ojciec na ośle, syn pieszo. Dzień 2: syn na ośle, ojciec pieszo. Dzień 3: obaj pieszo, osioł na postronku. Dzień 4: obaj na ośle. Dzień 5: niosą osła na barkach. Za każdym razem kupcy coś krytykowali!',
   render(c,a){
     intro(c, qi('Ułóż w kolejności, jak mędrzec i jego syn chodzili na bazar.'));
     renderOrder(c, ['Ojciec jedzie na ośle, a syn idzie pieszo.','Syn jedzie na ośle, a ojciec idzie pieszo.','Obaj idą pieszo, a osła prowadzą na postronku.','Obaj siedzą na grzbiecie osła.','Obaj niosą osła na swoich barkach.'], a);
   }
 });
-openQ(6,{ q:'Czego mędrzec chciał nauczyć syna, zabierając go pięć razy na bazar?',
+openQ(6,{ book:'„Nauki mędrca”, M. Piquemal – s. 29–30', q:'Czego mędrzec chciał nauczyć syna, zabierając go pięć razy na bazar?',
   model:'Chciał pokazać, że <b>cokolwiek zrobimy, ludzie zawsze będą mieli coś do zarzucenia</b>. Dlatego <b>nie wolno przejmować się ich zdaniem</b> – trzeba robić to, co wydaje się słuszne, i <b>iść swoją własną drogą</b>.',
   points:['ludzie zawsze znajdą coś do skrytykowania','nie przejmować się zdaniem innych / robić to, co słuszne, iść swoją drogą'] });
-Q.push({ lesson:6,
+Q.push({ book:'„Nauki mędrca”, M. Piquemal – s. 29–30', lesson:6,
   hint:'Syn miał <b>kompleksy</b> na punkcie swojego wyglądu i bał się, że ludzie będą się z niego naśmiewać. <b>Kompleks</b> – niepewność, wstyd z powodu wyglądu, charakteru albo umiejętności.',
   render(c,a){
     intro(c, qi('Dlaczego syn mędrca nie chciał wychodzić z domu?'));
     renderOptions(c, opts('miał kompleksy z powodu wyglądu i bał się, że ludzie będą się z niego śmiali','był chory','nie lubił swojego osła','nie chciał pomagać ojcu na bazarze'), a, true);
   }
 });
-Q.push({ lesson:6,
+Q.push({ book:'„Nauki mędrca”, M. Piquemal – s. 29–30', lesson:6,
   hint:'<b>szemranie</b> – ciche mówienie; <b>drwić</b> – kpić, wyśmiewać się; <b>postronek</b> – mocny sznur; <b>dosiadać</b> – siadać na grzbiecie zwierzęcia; <b>skwitować</b> – zareagować na coś, podsumować; <b>bazar</b> – miejsce, gdzie sprzedaje się towary.',
   render(c,a){
     const set=pick([['drwić','kpić, wyśmiewać się'],['postronek','mocny sznur'],['szemranie','ciche mówienie'],['dosiadać','siadać na grzbiecie zwierzęcia'],['bazar','miejsce, gdzie sprzedaje się towary'],['kompleks','niepewność, wstyd z powodu wyglądu lub umiejętności']],4);
@@ -996,20 +997,20 @@ Q.push({ lesson:7,
     renderOptions(c, [opts('15 września','1 września','14 października','1 czerwca'), opts('kreatywności, odwagi i odkrywania talentów','matematyki i liczenia','czystości i porządku','sportu i ruchu'), opts('„Kropka" Petera H. Reynoldsa','„Moje lato z szablozębnym"','„Nauki mędrca"','„Dzieci z Bullerbyn"')][v], a, v===1);
   }
 });
-Q.push({ lesson:7,
+Q.push({ book:'„Kropka”, P.H. Reynolds – s. 33–34', lesson:7,
   hint:'Pusta kartka → „Postaw tu kropkę" → Vashti ze złością stawia kropkę flamastrem → kropka w złotej ramce nad biurkiem → Vashti maluje coraz ładniejsze i większe kropki → wystawa i sukces → chłopiec rysuje zygzak i Vashti prosi, żeby go podpisał.',
   render(c,a){
     intro(c, qi('Ułóż w kolejności wydarzenia z opowiadania „Kropka".'));
     renderOrder(c, ['Vashti siedzi nad pustą kartką.','Vashti stawia na kartce kropkę flamastrem.','Kropka wisi w złotej ramce nad biurkiem nauczycielki.','Vashti maluje kolorowe i coraz większe kropki.','Na szkolnej wystawie Vashti odnosi sukces.','Vashti prosi chłopca, żeby podpisał swój zygzak.'], a);
   }
 });
-openQ(7,{ q:'Dlaczego Vashti poprosiła chłopca, żeby podpisał narysowany zygzak?',
+openQ(7,{ book:'„Kropka”, P.H. Reynolds – s. 33–34', q:'Dlaczego Vashti poprosiła chłopca, żeby podpisał narysowany zygzak?',
   model:'Chciała <b>dodać mu odwagi i wiary w siebie</b> – zrobiła dla niego to samo, co <b>nauczycielka zrobiła dla niej</b>, gdy kazała podpisać kropkę. Dzięki temu chłopiec może odkryć swój talent.',
   points:['chciała dodać mu odwagi / wiary w siebie','zrobiła to, co wcześniej nauczycielka zrobiła dla niej'] });
-openQ(7,{ q:'Jaką rolę w historii Vashti odegrała nauczycielka?',
+openQ(7,{ book:'„Kropka”, P.H. Reynolds – s. 33–34', q:'Jaką rolę w historii Vashti odegrała nauczycielka?',
   model:'Nauczycielka <b>uwierzyła w Vashti i zachęciła ją</b> do działania: poprosiła o kropkę, kazała ją podpisać i <b>powiesiła ją w złotej ramce</b>. Dzięki temu Vashti zaczęła tworzyć i odkryła swój talent.',
   points:['zachęciła Vashti / uwierzyła w nią','np. kazała podpisać kropkę, oprawiła ją w ramkę – Vashti odkryła talent'] });
-Q.push({ lesson:7,
+Q.push({ book:'„Co robisz z pomysłem?”, K. Yamada – s. 36', lesson:7,
   hint:'„Co robisz z pomysłem?" K. Yamady: bohater porzucił pomysł, bo wydawał się <b>dziwny i kruchy</b>, nie wiedział, co z nim zrobić. „Pomysł zaczął za nim chodzić" – czyli <b>nie dawał mu spokoju</b>, ciągle o nim myślał.',
   render(c,a){
     const v=Math.random()<.5;
@@ -1160,7 +1161,7 @@ for(let k=0;k<2;k++) Q.push({ lesson:10, open:true,
 openQ(11,{ q:'Co to jest plan ramowy?',
   model:'Plan ramowy to <b>spisane w punktach najważniejsze wydarzenia</b> – <b>bez szczegółów</b>, ułożone <b>w kolejności chronologicznej</b> (od początku do końca).',
   points:['najważniejsze wydarzenia w punktach','bez szczegółów, w kolejności (chronologicznej)'] });
-Q.push({ lesson:11,
+Q.push({ book:'„Stoję murem za Bartkiem”, M. Michalak – s. 46–47', lesson:11,
   hint:'Pani Temperówka pyta o „akceptować" → Bartek wyjaśnia (bankomat) → klasa się śmieje → Bartek dostaje uwagę → Miłosz broni Bartka → pani się upiera → rodzice wspierają Miłosza i są z niego dumni.',
   render(c,a){
     intro(c, qi('Ułóż plan ramowy opowiadania „Stoję murem za Bartkiem" we właściwej kolejności.'));
@@ -1188,7 +1189,7 @@ Q.push({ lesson:11,
     renderOptions(c, pts.map((t,i)=>({text:`${i+1}. ${t}`, correct:i===bad})), a, true);
   }
 });
-Q.push({ lesson:11,
+Q.push({ book:'„Stoję murem za Bartkiem”, M. Michalak – s. 46–47', lesson:11,
   hint:'Bartek myślał, że „akceptować" to <b>wypłacać pieniądze z bankomatu</b> (bankomat „prosi o akceptację"). Klasa się śmiała, ale tylko Miłosz wiedział, że Bartek <b>nie żartował</b>. Pani Temperówka uznała, że Bartek <b>zrobił sobie z lekcji kabaret</b>, i wpisała mu uwagę.',
   render(c,a){
     const v=rnd(0,2);
@@ -1198,7 +1199,7 @@ Q.push({ lesson:11,
       opts('chciał obronić Bartka, bo wiedział, że kolega się pomylił, a nie żartował','chciał dostać lepszą ocenę','chciał, żeby Bartek też dostał uwagę','chciał zmienić klasę')][v], a, true);
   }
 });
-openQ(11,{ q:'Jakie uczucia mógł mieć Bartek, gdy cała klasa zaczęła się z niego śmiać? Uzasadnij.',
+openQ(11,{ book:'„Stoję murem za Bartkiem”, M. Michalak – s. 46–47', q:'Jakie uczucia mógł mieć Bartek, gdy cała klasa zaczęła się z niego śmiać? Uzasadnij.',
   model:'Bartek mógł czuć <b>zdziwienie</b> (nie wiedział, co takiego śmiesznego powiedział), <b>wstyd i przykrość</b> (śmiało się z niego dwadzieścia osób) i <b>niesprawiedliwość</b>, bo naprawdę nie żartował.',
   points:['nazwa uczucia (np. zdziwienie, wstyd, smutek, przykrość)','uzasadnienie (śmiano się z niego, choć nie żartował / nie wiedział, co śmiesznego powiedział)'] });
 
@@ -1300,7 +1301,7 @@ const RQ = (group, q) => Q.push({ lesson:READING, group, ...q });
 // pytanie zamknięte do tekstu
 const RC = (group, hint, ask, build) => RQ(group, { hint, render(c,a){ intro(c, passage(group)+qi(ask)); build(c,a); } });
 // pytanie otwarte do tekstu – AI dostaje też cały tekst
-const RO = (group, spec) => RQ(group, { open:true, render(c,a){ const s={...spec, text:TEXTS[group].plain}; intro(c, passage(group)+qi(s.q)); renderOpen(c, s, a); } });
+const RO = (group, spec) => RQ(group, { book:spec.book, open:true, render(c,a){ const s={...spec, text:TEXTS[group].plain}; intro(c, passage(group)+qi(s.q)); renderOpen(c, s, a); } });
 
 /* --- Dinozaur w plecaku --- */
 RC('dino','Na początku tekstu: rodzice powiedzieli, że <b>przeprowadzają się do Gdańska</b> – dlatego Hania poszła do nowej szkoły.',
@@ -1358,7 +1359,7 @@ RO('mecz',{ q:'Czym różniło się zachowanie Igora od zachowania innych chłop
 RO('mecz',{ q:'Dlaczego Staś uznał, że słowa sędziego były „odważniejsze niż jego gol"?',
   model:'Bo <b>przyznanie się do błędu jest trudne</b> i wymaga odwagi – zwłaszcza dla dorosłego i sędziego, przy wszystkich. Pan Zbyszek mimo to powiedział „pomyliłem się" i <b>przeprosił</b>.',
   points:['przyznanie się do błędu wymaga odwagi / jest trudne','sędzia (dorosły) przyznał się i przeprosił'] });
-RO('mecz',{ q:'Porównaj pana Zbyszka z panią Temperówką z opowiadania „Stoję murem za Bartkiem". Czym się różnią?',
+RO('mecz',{ book:'„Stoję murem za Bartkiem”, M. Michalak – s. 46–47', q:'Porównaj pana Zbyszka z panią Temperówką z opowiadania „Stoję murem za Bartkiem". Czym się różnią?',
   model:'Pani Temperówka <b>nie chciała przyznać, że się pomyliła</b> – uważała się za nieomylną i nie cofnęła uwagi Bartkowi. Pan Zbyszek <b>sprawdził nagranie, przyznał się do błędu i przeprosił</b> Stasia.',
   points:['pani Temperówka nie przyznała się do błędu (uważała się za nieomylną)','pan Zbyszek przyznał się do błędu i przeprosił'] });
 
@@ -1468,6 +1469,7 @@ function showQuestion(){
   questionArea.innerHTML='';
   let answered=false;
   q.render(questionArea, (ok,noHint,note)=>{ if(answered) return; answered=true; handleAnswer(ok,q,noHint,note); });
+  if(q.book) questionArea.insertAdjacentHTML('afterbegin',`<p class="book-ref">📕 Tekst z podręcznika: ${q.book}</p>`);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
