@@ -175,6 +175,8 @@
   .pick-tools{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--muted);flex-wrap:wrap;gap:8px;margin-top:14px;}
   .link-btn{background:none;border:none;color:var(--primary);font-weight:700;cursor:pointer;font-family:inherit;padding:0;}
   .intro{text-align:left;line-height:1.5;margin:0;}
+  .muted-note{font-size:.9rem;color:var(--muted);margin:8px 0 0;}
+  .practice-title{margin:26px 0 0;padding-top:18px;border-top:2px solid var(--line);color:var(--primary-dark);}
   .breakdown{text-align:left;display:grid;gap:8px;margin:16px 0;}
   .bd-row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;font-size:.92rem;}
   .bd-bar{grid-column:1 / -1;height:8px;background:var(--line);border-radius:6px;overflow:hidden;}
@@ -215,14 +217,18 @@
 
   <section id="start-screen" class="card">
     <p class="intro">Sprawdzian powstał na podstawie rozdziału I podręcznika i notatek z zeszytu. Jest w nim <b>czytanie ze zrozumieniem</b> – cztery nowe teksty, których jeszcze nie znasz – oraz <b>pytania pisemne</b>: odpowiadasz własnymi słowami, a AI porównuje odpowiedź z wzorem.</p>
+    <div class="start-btns">
+      <button id="summary-btn" class="primary-btn">📝 Sprawdzian – 45 minut</button>
+    </div>
+    <p class="muted-note">Około 20 pytań: po jednym z każdej lekcji i jeden tekst do czytania ze zrozumieniem.</p>
+    <h3 class="practice-title">Ćwiczenia</h3>
     <div class="pick-tools">
-      <span>Które lekcje sprawdzamy?</span>
+      <span>Które lekcje ćwiczymy? Tu są wszystkie pytania z lekcji.</span>
       <span><button class="link-btn" id="pick-all">zaznacz wszystkie</button> · <button class="link-btn" id="pick-none">odznacz</button></span>
     </div>
     <div class="lesson-pick" id="lesson-pick"></div>
     <div class="start-btns">
-      <button id="start-btn" class="primary-btn">Rozpocznij sprawdzian</button>
-      <button id="summary-btn" class="primary-btn gold-btn">🎯 Test podsumowujący</button>
+      <button id="start-btn" class="primary-btn gold-btn">Ćwicz wybrane lekcje</button>
       <button id="reading-btn" class="primary-btn gold-btn">📖 Czytanie ze zrozumieniem</button>
     </div>
   </section>
@@ -1422,12 +1428,18 @@ for(let l=1;l<LESSONS.length;l++){
   pickEl.insertAdjacentHTML('beforeend',`<label><input type="checkbox" value="${l}" checked> <span>${l}. ${LESSONS[l]}${l===READING?' <span class="star">· nowe teksty</span>':''}</span><span class="cnt">${cnt}</span></label>`);
 }
 const boxes=()=>[...pickEl.querySelectorAll('input')];
-function refreshStart(){ $('start-btn').disabled = !boxes().some(b=>b.checked); }
+function refreshStart(){
+  const sel=boxes().filter(b=>b.checked).map(b=>+b.value);
+  const n=Q.filter(q=>!q.group && sel.includes(q.lesson)).length, reading=sel.includes(READING);
+  $('start-btn').disabled = !sel.length;
+  $('start-btn').textContent = 'Ćwicz wybrane lekcje' + (sel.length ? ` (${n ? n+' pyt.' : ''}${n && reading ? ' + ' : ''}${reading ? TEXTS_PER_RUN+' teksty' : ''})` : '');
+}
 pickEl.addEventListener('change',refreshStart);
 $('pick-all').onclick=()=>{ boxes().forEach(b=>b.checked=true); refreshStart(); };
 $('pick-none').onclick=()=>{ boxes().forEach(b=>b.checked=false); refreshStart(); };
+refreshStart();
 
-// perLesson: pytania z lekcji w losowej kolejności (w teście podsumowującym – po 2 z każdej lekcji),
+// perLesson: pytania z lekcji w losowej kolejności (w sprawdzianie na 45 minut – po 1 z każdej lekcji),
 // teksty do czytania: losowo wybrane, pytania do jednego tekstu po kolei
 function startQuiz(lessons, perLesson, texts=TEXTS_PER_RUN){
   const chosen=new Set(lessons);
@@ -1519,7 +1531,7 @@ function showResults(){
 }
 
 $('start-btn').onclick=()=>startQuiz(boxes().filter(b=>b.checked).map(b=>+b.value));
-$('summary-btn').onclick=()=>startQuiz(LESSONS.map((_,i)=>i).slice(1), 2, 1);
+$('summary-btn').onclick=()=>startQuiz(LESSONS.map((_,i)=>i).slice(1), 1, 1);
 $('reading-btn').onclick=()=>startQuiz([READING]);
 $('restart-btn').onclick=()=>{ resultScreen.hidden=true; startScreen.hidden=false; };
 nextBtn.onclick=goNext;
