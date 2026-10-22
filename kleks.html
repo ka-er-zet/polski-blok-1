@@ -262,7 +262,7 @@
   </section>
 
   <footer>
-    <p>Na podstawie książki Jana Brzechwy „Akademia pana Kleksa” (1946). Pytania napisano własnymi słowami, bez cytowania tekstu książki.</p>
+    <p>Na podstawie książki Jana Brzechwy „Akademia pana Kleksa” (1946). Pytania sprawdzono z tekstem książki i napisano własnymi słowami; w wyjaśnieniach podano numer rozdziału.</p>
   </footer>
 </div>
 
@@ -663,122 +663,140 @@ const opts = (correct, ...wrong) => shuffle([{text:correct,correct:true}, ...wro
 const qi = t => `<p class="q-instruction">${t}</p>`;
 
 /* =========================================================
-   PYTANIA – Jan Brzechwa „Akademia pana Kleksa" (cała książka)
+   PYTANIA – Jan Brzechwa „Akademia pana Kleksa" (cała książka, rozdz. 1–12)
+   Wszystkie fakty sprawdzone z tekstem książki; w podpowiedziach numer rozdziału.
    ========================================================= */
 const LESSONS = [
   null,
   'Bohaterowie',
   'Akademia i jej zwyczaje',
-  'Przygody i zakończenie'
+  'Przygody',
+  'Zakończenie'
 ];
 const Q = [];
 const openQ = (lesson, spec) => Q.push({ lesson, open:true, render(c,a){ intro(c, qi(spec.q)); renderOpen(c, spec, a); } });
 
 /* ---------- 1. Bohaterowie ---------- */
 Q.push({ lesson:1,
-  hint:'„Akademię pana Kleksa" napisał <b>Jan Brzechwa</b>. Książka ukazała się w 1946 roku.',
+  hint:'„Akademię pana Kleksa" napisał <b>Jan Brzechwa</b>.',
   render(c,a){ intro(c, qi('Kto jest autorem „Akademii pana Kleksa"?')); renderOptions(c, opts('Jan Brzechwa','Julian Tuwim','Kornel Makuszyński','Maria Konopnicka'), a); }
 });
 Q.push({ lesson:1,
-  hint:'Historię opowiada <b>Adaś Niezgódka</b>, jeden z uczniów akademii. Mówi o sobie „ja" – to narrator pierwszoosobowy.',
-  render(c,a){ intro(c, qi('Kto opowiada historię w książce (kto jest narratorem)?')); renderOptions(c, opts('Adaś Niezgódka','pan Kleks','szpak Mateusz','golarz Filip'), a); }
+  hint:'Historię opowiada <b>Adam (Adaś) Niezgódka</b>, uczeń akademii. Mówi o sobie „ja" i pisze o akademii <b>pamiętnik</b> (rozdz. 1).',
+  render(c,a){
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Kto opowiada historię w książce (kto jest narratorem)?' : 'Co pisze Adaś Niezgódka, opowiadając o akademii?'));
+    renderOptions(c, v ? opts('Adaś Niezgódka','pan Kleks','szpak Mateusz','golarz Filip') : opts('pamiętnik','listy do mamy','gazetkę szkolną','książkę kucharską'), a);
+  }
 });
 Q.push({ lesson:1,
-  hint:'Gdy zaczyna się przygoda, Adaś Niezgódka ma <b>12 lat</b>.',
-  render(c,a){ intro(c, qi('Ile lat ma Adaś Niezgódka, kiedy trafia do akademii?')); renderOptions(c, opts('12','8','10','15'), a); }
+  hint:'Na początku książki Adaś mówi, że ma <b>12 lat</b>, jest <b>rudy</b> i jest w akademii <b>od pół roku</b> (rozdz. 1).',
+  render(c,a){
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Ile lat ma Adaś Niezgódka?' : 'Jakiego koloru włosy ma Adaś Niezgódka?'));
+    renderOptions(c, v ? opts('12','8','10','15') : opts('rude','czarne','białe jak śnieg','zielone'), a);
+  }
+});
+Q.push({ lesson:1,
+  hint:'W domu Adasiowi nic się nie udawało: <b>spóźniał się do szkoły</b>, miał „gliniane ręce" i <b>wszystko tłukł</b>. Gdy oblał atramentem spodnie, obrus i kostium mamy, <b>rodzice wysłali go do pana Kleksa</b> (rozdz. 1).',
+  render(c,a){
+    intro(c, qi('Dlaczego Adaś trafił do Akademii pana Kleksa?'));
+    renderOptions(c, opts('rodzice go wysłali, bo w domu nic mu się nie udawało i wszystko tłukł','wygrał konkurs na najlepszego ucznia','sam uciekł z domu, bo chciał latać','pan Kleks wybrał go, bo był najlepszy z matematyki'), a, true);
+  }
 });
 Q.push({ lesson:1,
   hint:'Pan Kleks ma na imię <b>Ambroży</b>.',
   render(c,a){ intro(c, qi('Jak ma na imię pan Kleks?')); renderInput(c, ['Ambroży'], a); }
 });
 Q.push({ lesson:1,
-  hint:'Mateusz to <b>uczony szpak</b>, pomocnik pana Kleksa. Wymawia tylko <b>końcówki wyrazów</b>.',
+  hint:'Mateusz to <b>uczony szpak</b> pana Kleksa. Wymawia tylko <b>końcówki wyrazów</b>. Często zastępuje pana Kleksa na lekcjach, a mieszka w <b>tylnej kieszeni jego surduta</b> (rozdz. 1 i 3).',
   render(c,a){
-    const v=Math.random()<.5;
-    intro(c, qi(v ? 'Kim jest Mateusz?' : 'Co jest niezwykłego w tym, jak mówi Mateusz?'));
-    renderOptions(c, v ? opts('uczonym szpakiem, pomocnikiem pana Kleksa','synem golarza Filipa','najlepszym przyjacielem Adasia z klasy','psem Adasia')
-      : opts('wymawia tylko końcówki wyrazów','mówi wierszem','mówi tylko po chińsku','mówi wszystko od tyłu'), a, true);
+    const v=pick([
+      ['Kim jest Mateusz?', opts('uczonym szpakiem pana Kleksa','synem golarza Filipa','jednym z uczniów','psem Adasia')],
+      ['Co jest niezwykłego w tym, jak mówi Mateusz?', opts('wymawia tylko końcówki wyrazów','mówi wierszem','mówi tylko po chińsku','mówi wszystko od tyłu')],
+      ['Gdzie lubi przebywać Mateusz?', opts('w tylnej kieszeni surduta pana Kleksa','w klatce w kuchni','na wieży zegarowej','w dziupli starego dębu')]
+    ],1)[0];
+    intro(c, qi(v[0])); renderOptions(c, v[1], a, true);
   }
 });
 Q.push({ lesson:1,
-  hint:'Mateusz wymawia tylko końcówki wyrazów. Gdy odbiera telefon, mówi: „Osz… u emia ana eksa", czyli <b>„Proszę, tu Akademia pana Kleksa"</b>.',
+  hint:'Mateusz wymawia tylko końcówki wyrazów. Odbierając telefon, mówi: „Oszę, u emia ana eksa!", czyli <b>„Proszę, tu Akademia pana Kleksa"</b> (rozdz. 1).',
   render(c,a){
-    intro(c, qi('Mateusz, odbierając telefon, mówi: <b>„Osz… u emia ana eksa"</b>. Co to znaczy?'));
+    intro(c, qi('Mateusz, odbierając telefon, mówi: <b>„Oszę, u emia ana eksa!"</b> Co to znaczy?'));
     renderOptions(c, opts('Proszę, tu Akademia pana Kleksa.','Uwaga, pan Kleks śpi.','Dzień dobry, tu szpak Mateusz.','Proszę zadzwonić jutro.'), a, true);
   }
 });
 Q.push({ lesson:1,
-  hint:'Pan Kleks ma na twarzy <b>kolorowe piegi</b> (uważa, że piegi są piękne i modne) i nosi <b>cytrynowożółtą kamizelkę</b>, która wygląda, jakby była zrobiona z samych <b>kieszeni</b>.',
+  hint:'Pan Kleks ma <b>czuprynę w kolorach tęczy</b>, <b>czarną brodę</b>, <b>pomarańczowe wąsy</b>, srebrne binokle, twarz w <b>piegach</b> i nosi <b>cytrynową kamizelkę</b> z mnóstwem kieszeni (rozdz. 3).',
   render(c,a){
     intro(c, qi('Zaznacz <u>wszystko</u>, co pasuje do wyglądu pana Kleksa.'));
     renderMulti(c, shuffle([
-      {text:'kolorowe piegi',correct:true},{text:'kamizelka z mnóstwem kieszeni',correct:true},{text:'cytrynowożółta kamizelka',correct:true},
-      {text:'drewniana noga',correct:false},{text:'mundur kapitana',correct:false},{text:'biały fartuch lekarza',correct:false}
+      {text:'piegi na twarzy',correct:true},{text:'czupryna w kolorach tęczy',correct:true},{text:'kamizelka z mnóstwem kieszeni',correct:true},{text:'pomarańczowe wąsy',correct:true},
+      {text:'krótko ostrzyżone siwe włosy',correct:false},{text:'drewniana noga',correct:false},{text:'mundur kapitana',correct:false}
     ]), a);
   }
 });
 Q.push({ lesson:1,
-  hint:'Pan Kleks potrafi <b>unosić się w powietrzu</b>, <b>przyrządzać potrawy z kolorowych szkiełek</b>, <b>powiększać i zmniejszać przedmioty</b> i trzymać <b>płomyki świec w kieszeniach bez dna</b>.',
+  hint:'Pan Kleks potrafi m.in. <b>unosić się w powietrzu</b>, <b>robić z małych przedmiotów duże</b> (pompką), <b>przyrządzać potrawy z kolorowych szkiełek</b>, <b>przechowywać płomyki świec w kieszeni</b> i odgadywać, co kto myśli (rozdz. 3).',
   render(c,a){
     intro(c, qi('Co potrafi pan Kleks? Zaznacz <u>wszystkie</u> dobre odpowiedzi.'));
     renderMulti(c, shuffle([
       {text:'unosić się w powietrzu',correct:true},{text:'przyrządzać potrawy z kolorowych szkiełek',correct:true},
-      {text:'powiększać i zmniejszać przedmioty',correct:true},{text:'trzymać płomyki świec w kieszeniach',correct:true},
+      {text:'powiększać przedmioty',correct:true},{text:'przechowywać płomyki świec w kieszeni',correct:true},
       {text:'latać na miotle',correct:false},{text:'zamieniać ludzi w kamień',correct:false}
     ]), a);
   }
 });
 Q.push({ lesson:1,
-  hint:'<b>Golarz Filip</b> to fryzjer pana Kleksa. Nie lubi ani pana Kleksa, ani jego uczniów. To on przyprowadza do akademii swoich synów: <b>Anatola</b> i <b>Alojzego</b>.',
+  hint:'<b>Golarz (fryzjer) Filip</b> co czwartek przynosił panu Kleksowi <b>świeże piegi</b>, które zbierał brzytwą z twarzy klientów (rozdz. 1). Później przyprowadził do akademii <b>Anatola i Alojzego</b> (rozdz. 9).',
   render(c,a){
-    intro(c, qi('Kto przyprowadza do akademii Anatola i Alojzego?'));
-    renderOptions(c, opts('golarz Filip, ich ojciec','szpak Mateusz','doktor Paj-Chi-Wo','dyrektor fabryki dziur'), a);
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Co golarz Filip przynosił panu Kleksowi co czwartek?' : 'Kto przyprowadził do akademii Anatola i Alojzego?'));
+    renderOptions(c, v ? opts('świeże piegi','kolorowe baloniki','motyle na drugie śniadanie','nowe książki')
+      : opts('golarz Filip','szpak Mateusz','doktor Paj-Chi-Wo','inżynier Kopeć'), a);
   }
 });
 Q.push({ lesson:1,
-  hint:'<b>Anatol</b> był prawdziwym chłopcem, a <b>Alojzy</b> – tylko <b>lalką</b> skonstruowaną przez golarza Filipa.',
+  hint:'<b>Anatol Kukuryk</b> był prawdziwym chłopcem i dobrym kolegą. <b>Alojzy</b> był <b>lalką</b>, nad którą Filip pracował 20 lat. Pan Kleks ożywił go w szpitalu chorych sprzętów (rozdz. 9).',
   render(c,a){
     intro(c, qi('Kim naprawdę był Alojzy?'));
-    renderOptions(c, opts('lalką skonstruowaną przez golarza Filipa','zaczarowanym księciem','najstarszym uczniem akademii','bratem pana Kleksa'), a, true);
+    renderOptions(c, opts('lalką zrobioną przez Filipa, którą ożywił pan Kleks','zaczarowanym księciem','najstarszym uczniem akademii','bratem pana Kleksa'), a, true);
   }
 });
 Q.push({ lesson:1,
-  hint:'<b>Pan Kleks</b>: piegi, kamizelka z kieszeniami, unosi się w powietrzu. <b>Mateusz</b>: uczony szpak, mówi końcówkami wyrazów. <b>Adaś</b>: 12 lat, rude włosy, wszystko upuszczał. <b>Alojzy</b>: lalka zrobiona przez Filipa, niszczył wszystko.',
+  hint:'<b>Pan Kleks</b>: piegi, kamizelka z kieszeniami, unosi się w powietrzu. <b>Mateusz</b>: uczony szpak, mówi końcówkami wyrazów. <b>Adaś</b>: rudy, 12 lat, pisze pamiętnik. <b>Alojzy</b>: lalka, wszystko niszczył. <b>Filip</b>: fryzjer, przynosił piegi.',
   render(c,a){
     intro(c, qi('Kto to? Przyporządkuj opis do postaci.'));
     renderSort(c, ['pan Kleks','Mateusz','Adaś','Alojzy'], pick([
-      {text:'ma kolorowe piegi',cat:0},{text:'unosi się w powietrzu',cat:0},{text:'nosi kamizelkę z samych kieszeni',cat:0},
-      {text:'jest uczonym szpakiem',cat:1},{text:'wymawia tylko końcówki wyrazów',cat:1},
-      {text:'ma 12 lat i rude włosy',cat:2},{text:'wszystko upuszczał i spóźniał się na lekcje',cat:2},
+      {text:'ma czuprynę w kolorach tęczy',cat:0},{text:'je motyle na drugie śniadanie',cat:0},{text:'łyka pigułki na porost włosów',cat:0},
+      {text:'jest uczonym szpakiem',cat:1},{text:'wymawia tylko końcówki wyrazów',cat:1},{text:'budzi chłopców o piątej',cat:1},
+      {text:'jest rudy i pisze pamiętnik',cat:2},{text:'zbiera guziki',cat:2},
       {text:'jest lalką zrobioną przez Filipa',cat:3},{text:'zniszczył sekrety pana Kleksa',cat:3}
-    ],6), a);
+    ],7), a);
   }
 });
 openQ(1,{ q:'Opisz pana Kleksa: jak wygląda i co potrafi?',
-  model:'Pan Kleks ma na twarzy <b>kolorowe piegi</b> i nosi <b>cytrynowożółtą kamizelkę z mnóstwem kieszeni</b> (kieszenie są bez dna). Potrafi <b>unosić się w powietrzu</b>, przyrządzać <b>potrawy z kolorowych szkiełek</b>, powiększać i zmniejszać przedmioty, trzymać płomyki świec w kieszeniach.',
-  points:['co najmniej jeden szczegół wyglądu (np. kolorowe piegi, kamizelka z kieszeniami)','co najmniej jedna niezwykła umiejętność (np. unosi się w powietrzu, potrawy z kolorowych szkiełek, zmniejsza i powiększa przedmioty)'] });
-openQ(1,{ q:'Jaki był Adaś Niezgódka, zanim trafił do akademii, i jak się do niej dostał?',
-  model:'Adaś był <b>niesforny</b>, miał „gliniane ręce" – <b>wszystko upuszczał</b> i <b>spóźniał się na lekcje</b>. Pewnego dnia przyleciał do niego <b>szpak Mateusz</b> z <b>zaproszeniem od pana Kleksa</b> do akademii.',
-  points:['opis Adasia: niezdarny/niesforny (upuszczał wszystko, spóźniał się)','dostał zaproszenie od pana Kleksa (przyniósł je szpak Mateusz)'] });
+  model:'Pan Kleks ma <b>czuprynę we wszystkich kolorach tęczy</b>, czarną brodę, pomarańczowe wąsy, srebrne binokle i twarz w <b>piegach</b>. Nosi cytrynową kamizelkę i spodnie z <b>mnóstwem kieszeni</b>. Potrafi <b>unosić się w powietrzu</b>, powiększać przedmioty pompką, przyrządzać <b>potrawy z kolorowych szkiełek</b>, przechowywać płomyki świec w kieszeni i odgadywać myśli.',
+  points:['co najmniej jeden szczegół wyglądu (np. tęczowa czupryna, piegi, kamizelka z kieszeniami, binokle)','co najmniej jedna niezwykła umiejętność (np. unosi się w powietrzu, potrawy z kolorowych szkiełek, powiększa przedmioty)'] });
+openQ(1,{ q:'Jaki był Adaś Niezgódka w domu, zanim trafił do akademii, i dlaczego się w niej znalazł?',
+  model:'W domu Adasiowi <b>nic się nie udawało</b>: <b>spóźniał się do szkoły</b>, nie odrabiał lekcji, miał „gliniane ręce" i <b>wszystko tłukł</b>. Gdy oblał atramentem spodnie, obrus i kostium mamy, <b>rodzice wysłali go</b> na naukę do pana Kleksa.',
+  points:['opis Adasia: niezdarny / nic mu się nie udawało (tłukł, spóźniał się)','do akademii wysłali go rodzice'] });
 
 /* ---------- 2. Akademia i jej zwyczaje ---------- */
 Q.push({ lesson:2,
-  hint:'Akademia pana Kleksa znajduje się przy ulicy <b>Czekoladowej</b>.',
+  hint:'Akademia mieści się <b>na samym końcu ulicy Czekoladowej</b> w trzypiętrowym gmachu z kolorowych cegiełek (rozdz. 1).',
   render(c,a){ intro(c, qi('Przy jakiej ulicy znajduje się Akademia pana Kleksa?')); renderOptions(c, opts('Czekoladowej','Cukierkowej','Bajkowej','Atramentowej'), a); }
 });
 Q.push({ lesson:2,
-  hint:'Do akademii przyjmowano tylko chłopców, których <b>imiona zaczynały się na literę A</b> (Adaś, Anatol, Alojzy…).',
+  hint:'Pan Kleks przyjmuje tylko chłopców, których <b>imiona zaczynają się na literę A</b>. Uczniów jest <b>24</b>: czterech Adamów, pięciu Aleksandrów, trzech Andrzejów, trzech Alfredów, sześciu Antonich, Artur, Albert i Anastazy (rozdz. 1).',
   render(c,a){
-    intro(c, qi('Jaki warunek musieli spełniać uczniowie Akademii pana Kleksa?'));
-    renderOptions(c, opts('ich imiona zaczynały się na literę A','musieli mieć rude włosy','musieli umieć latać','musieli mieć 10 lat'), a, true);
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Jaki warunek musieli spełniać uczniowie Akademii pana Kleksa?' : 'Ilu uczniów było w Akademii pana Kleksa (zanim przyszli Anatol i Alojzy)?'));
+    renderOptions(c, v ? opts('ich imiona zaczynały się na literę A','musieli mieć rude włosy','musieli umieć latać','musieli mieć 10 lat') : opts('24','12','7','100'), a, v);
   }
 });
 Q.push({ lesson:2,
-  hint:'Adaś był w akademii razem z <b>23 innymi chłopcami</b> – razem <b>24</b> uczniów.',
-  render(c,a){ intro(c, qi('Ilu uczniów było w Akademii pana Kleksa (razem z Adasiem)?')); renderOptions(c, opts('24','12','7','100'), a); }
-});
-Q.push({ lesson:2,
-  hint:'Akademia to kolorowy, trzypiętrowy gmach. Na <b>trzecim piętrze</b> pan Kleks trzymał <b>swoje sekrety</b>. Schody prowadziły tylko na drugie piętro, więc pan Kleks dostawał się tam <b>przez komin</b>.',
+  hint:'Na <b>trzecim piętrze</b> są <b>sekrety pana Kleksa</b>. Schody prowadzą tylko do drugiego piętra, więc pan Kleks dostaje się tam <b>przez komin</b> (rozdz. 1).',
   render(c,a){
     const v=Math.random()<.5;
     intro(c, qi(v ? 'Co pan Kleks przechowywał na trzecim piętrze akademii?' : 'Jak pan Kleks dostawał się na trzecie piętro akademii?'));
@@ -787,111 +805,271 @@ Q.push({ lesson:2,
   }
 });
 Q.push({ lesson:2,
-  hint:'Akademię otaczał park i mur, w którym były <b>furtki prowadzące do sąsiednich bajek</b>. Adaś odwiedził m.in. bajkę o dziewczynce z zapałkami.',
+  hint:'W murze wokół parku są żelazne furtki prowadzące <b>do sąsiednich bajek</b>. Adaś poszedł np. po zapałki do bajki <b>o dziewczynce z zapałkami</b> pana Andersena (rozdz. 1).',
   render(c,a){
-    intro(c, qi('Dokąd prowadziły furtki w murze otaczającym park akademii?'));
-    renderOptions(c, opts('do sąsiednich bajek','na ulicę Czekoladową','do fabryki dziur i dziurek','do psiego raju'), a, true);
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Dokąd prowadziły furtki w murze otaczającym park akademii?' : 'Po co pan Kleks wysłał Adasia do bajki o dziewczynce z zapałkami?'));
+    renderOptions(c, v ? opts('do sąsiednich bajek','na ulicę Czekoladową','do fabryki dziur i dziurek','do psiego raju')
+      : opts('po pudełko zapałek','po parę butów','po miotłę','po kolorowe szkiełka'), a, true);
   }
 });
 Q.push({ lesson:2,
-  hint:'Dzień w akademii: o <b>piątej</b> na nosy chłopców kapie woda ze śluz w suficie → <b>prysznic</b> (woda z dodatkiem soku) → o wpół do szóstej <b>śniadanie</b> → o szóstej <b>apel</b>, na którym pan Kleks zbiera senne lusterka → o siódmej <b>lekcje</b>.',
+  hint:'O <b>piątej</b> Mateusz otwiera w suficie śluzy i <b>na nosy chłopców kapie zimna woda</b> → <b>prysznic</b> z wody sodowej z sokiem → o wpół do szóstej <b>śniadanie</b> → o szóstej <b>apel</b>: pan Kleks całuje każdego w czoło i zbiera senne lusterka → o siódmej <b>lekcje</b> (rozdz. 4).',
   render(c,a){
     intro(c, qi('Ułóż po kolei, jak zaczynał się dzień w akademii.'));
-    renderOrder(c, ['o piątej na nosy chłopców kapie woda z sufitu','prysznic z wodą z dodatkiem soku','śniadanie o wpół do szóstej','apel – pan Kleks zbiera senne lusterka','lekcje o siódmej'], a);
+    renderOrder(c, ['o piątej na nosy chłopców kapie woda z sufitu','prysznic z wody sodowej z sokiem','śniadanie o wpół do szóstej','apel – pan Kleks zbiera senne lusterka','lekcje o siódmej'], a);
   }
 });
 Q.push({ lesson:2,
-  hint:'W <b>sennych lusterkach</b> odbijały się <b>sny</b> chłopców. Po apelu pan Kleks je zbierał i oglądał.',
+  hint:'W <b>sennych lusterkach</b> odbijały się <b>sny</b> chłopców. Najlepsze sny pan Kleks suszył, robił z nich pastylki i zapisywał w <b>senniku</b> akademii (rozdz. 4).',
   render(c,a){
     intro(c, qi('Do czego służyły senne lusterka?'));
     renderOptions(c, opts('odbijały się w nich sny chłopców','pokazywały przyszłość','służyły do czesania się','przez nie wchodziło się do bajek'), a, true);
   }
 });
 Q.push({ lesson:2,
-  hint:'Za jeden z najciekawszych snów pan Kleks uznał sen Adasia <b>„O siedmiu szklankach"</b>.',
+  hint:'Najwyższym wyróżnieniem w akademii była <b>piega</b>, którą pan Kleks przytwierdzał do nosa ucznia. Karą był <b>żółty krawat w zielone grochy</b> noszony przez cały dzień (rozdz. 1 i 4).',
   render(c,a){
-    intro(c, qi('Który sen Adasia pan Kleks uznał za jeden z najciekawszych?'));
-    renderOptions(c, opts('„O siedmiu szklankach"','„O szklanej górze"','„O latającym dywanie"','„O królu wilków"'), a);
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Jaką nagrodę dostawał uczeń, który wyróżnił się na lekcji?' : 'Jaka była kara dla ucznia, który coś przeskrobał albo nie umiał lekcji?'));
+    renderOptions(c, v ? opts('piegę przytwierdzoną do nosa przez pana Kleksa','złoty medal','dodatkowy deser','dzień bez lekcji')
+      : opts('noszenie przez cały dzień żółtego krawata w zielone grochy','stanie w kącie','brak obiadu','przepisywanie książki'), a, true);
   }
 });
 Q.push({ lesson:2,
-  hint:'Lekcje w akademii to m.in.: <b>kleksografia</b>, <b>przędzenie liter</b>, <b>leczenie chorych sprzętów</b> i <b>gra w piłkę-globus</b> (czyli nauka geografii).',
+  hint:'Pan Kleks zapowiedział, że <b>nie będzie uczył tabliczki mnożenia, gramatyki ani kaligrafii</b>. Lekcje to m.in. <b>kleksografia</b>, <b>przędzenie liter</b>, <b>leczenie chorych sprzętów</b> i <b>gra w piłkę-globus</b> (rozdz. 4).',
   render(c,a){
     intro(c, qi('Jakie lekcje były w Akademii pana Kleksa? Zaznacz <u>wszystkie</u>.'));
     renderMulti(c, shuffle([
       {text:'kleksografia',correct:true},{text:'przędzenie liter',correct:true},{text:'leczenie chorych sprzętów',correct:true},{text:'gra w piłkę-globus',correct:true},
-      {text:'jazda na nartach',correct:false},{text:'gra na skrzypcach',correct:false}
+      {text:'tabliczka mnożenia',correct:false},{text:'gramatyka',correct:false}
     ]), a);
   }
 });
 Q.push({ lesson:2,
-  hint:'Gra w <b>piłkę-globus</b> była w akademii nauką <b>geografii</b>.',
-  render(c,a){ intro(c, qi('Czego chłopcy uczyli się, grając w piłkę-globus?')); renderOptions(c, opts('geografii','matematyki','śpiewu','pływania'), a); }
-});
-Q.push({ lesson:2,
-  hint:'Pan Kleks przyrządzał chłopcom <b>potrawy z kolorowych szkiełek</b>.',
-  render(c,a){ intro(c, qi('Z czego pan Kleks przyrządzał potrawy?')); renderOptions(c, opts('z kolorowych szkiełek','z płatków róż','z atramentu','z piasku'), a); }
-});
-openQ(2,{ q:'Opisz, jak wyglądał zwykły dzień w Akademii pana Kleksa (od pobudki do lekcji).',
-  model:'O <b>piątej</b> na nosy chłopców kapała woda z sufitu (to była pobudka). Potem był <b>prysznic</b> z wodą z dodatkiem soku, o wpół do szóstej <b>śniadanie</b>, o szóstej <b>apel</b>, na którym pan Kleks zbierał <b>senne lusterka</b>, a o siódmej zaczynały się <b>lekcje</b> (np. kleksografia, przędzenie liter).',
-  points:['pobudka – woda kapiąca na nosy (o piątej)','co najmniej dwa kolejne punkty dnia (prysznic z sokiem, śniadanie, apel / senne lusterka)','lekcje (np. kleksografia, przędzenie liter, leczenie chorych sprzętów)'] });
-
-/* ---------- 3. Przygody i zakończenie ---------- */
-Q.push({ lesson:3,
-  hint:'Chłopcy z panem Kleksem odwiedzili <b>fabrykę dziur i dziurek</b>. Oprowadzał ich jej dyrektor, Bogumił Kopeć, przyjaciel pana Kleksa.',
-  render(c,a){ intro(c, qi('Jaką fabrykę odwiedzili chłopcy z panem Kleksem?')); renderOptions(c, opts('fabrykę dziur i dziurek','fabrykę czekolady','fabrykę zabawek','fabrykę atramentu'), a); }
-});
-Q.push({ lesson:3,
-  hint:'W rozdziale „Moja wielka przygoda" Adaś trafia do <b>psiego raju</b> i spotyka tam swojego psa <b>Reksa</b>, który wcześniej wpadł pod koła samochodu.',
+  hint:'<b>Kleksografia</b>: robi się na papierze kilka kleksów atramentu, <b>składa kartkę na pół</b> i z rozmazanych kleksów powstają figury, zwierzęta i postacie, do których dopisuje się historyjki. <b>Przędzenie liter</b>: rozplątuje się litery z książek na nitki i nawija na szpulki (rozdz. 4).',
   render(c,a){
-    intro(c, qi('Kogo Adaś spotkał w psim raju?'));
-    renderOptions(c, opts('swojego psa Reksa','psa pana Kleksa','wilka, który zaczarował Mateusza','Kota w butach'), a);
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Na czym polegała kleksografia?' : 'Na czym polegało przędzenie liter?'));
+    renderOptions(c, v ? opts('na robieniu kleksów i składaniu kartki, żeby powstały z nich obrazki','na pisaniu bez ani jednego kleksa','na czyszczeniu kałamarzy','na rysowaniu map')
+      : opts('na rozplątywaniu liter z książek na nitki i nawijaniu ich na szpulki','na pisaniu liter na drutach','na szyciu ubrań w litery','na układaniu liter z makaronu'), a, true);
   }
 });
-Q.push({ lesson:3,
-  hint:'Mateusz opowiadał, że jest <b>zaczarowanym księciem</b>. Jako chłopiec zastrzelił <b>króla wilków</b> i wilki okrutnie się zemściły. Ranę na jego nodze wyleczył <b>doktor Paj-Chi-Wo</b>, a dzięki <b>czapce Bogdychanów</b> od doktora Mateusz zamienił się w ptaka i uciekł z pałacu opanowanego przez wilki.',
+Q.push({ lesson:2,
+  hint:'Lekcję geografii prowadził <b>Mateusz</b>: chłopcy grali w piłkę zrobioną z <b>globusa</b> i przy każdym kopnięciu wołali nazwę miasta, rzeki albo góry, w którą trafił czubek buta (rozdz. 4).',
+  render(c,a){ intro(c, qi('Czego chłopcy uczyli się, grając w piłkę zrobioną z globusa?')); renderOptions(c, opts('geografii','matematyki','śpiewu','pływania'), a); }
+});
+Q.push({ lesson:2,
+  hint:'W <b>szpitalu chorych sprzętów</b> pan Kleks leczył zepsute meble i zegary: mierzył stołom puls, smarował maścią, kleił lustra plasterkiem. Wdzięczne sprzęty odnalazły potem jego <b>złotą wykałaczkę</b> (rozdz. 4).',
+  render(c,a){
+    intro(c, qi('Co było w szpitalu chorych sprzętów?'));
+    renderOptions(c, opts('zepsute meble, lustra i zegary, które leczył pan Kleks','chorzy uczniowie','ranne ptaki z parku','psy z psiego raju'), a, true);
+  }
+});
+Q.push({ lesson:2,
+  hint:'Pan Kleks gotował <b>z kolorowych szkiełek</b>, smak nadawał <b>jadalnymi farbami</b> (np. zielona jest słodka, niebieska kwaśna), a potrawy zagotowywał <b>płomykami świec</b>. Tego nauczył go doktor Paj-Chi-Wo (rozdz. 5).',
+  render(c,a){
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Z czego pan Kleks przyrządzał potrawy?' : 'Czym pan Kleks nadawał potrawom smak?'));
+    renderOptions(c, v ? opts('z kolorowych szkiełek','z płatków róż','z atramentu','z piasku') : opts('jadalnymi farbami','sennym kwasem','zielonym płynem','sokiem z motyli'), a);
+  }
+});
+Q.push({ lesson:2,
+  hint:'Co dzień o północy pan Kleks <b>zmniejsza się jak niemowlę</b> i śpi w łóżeczku wielkości pudełka po cygarach. Rano <b>pompką powiększającą</b> wraca do zwykłej wielkości, a <b>pigułki na porost włosów</b> przywracają mu włosy i brodę. <b>Zielony płyn</b> przywraca mu pamięć (rozdz. 3).',
   render(c,a){
     const v=pick([
-      ['Kim według swojej opowieści był kiedyś Mateusz?', opts('zaczarowanym księciem','zwykłym wróblem','kucharzem króla','uczniem akademii')],
-      ['Kto wyleczył ranę Mateusza?', opts('doktor Paj-Chi-Wo','pan Kleks','golarz Filip','Bogumił Kopeć')],
-      ['Dzięki czemu Mateusz zamienił się w ptaka?', opts('dzięki czapce Bogdychanów','dzięki pigułce pana Kleksa','dzięki sennemu lusterku','dzięki kleksowi atramentu')],
-      ['Na kim zemściły się wilki w opowieści Mateusza?', opts('na kraju księcia, który zastrzelił króla wilków','na panu Kleksie','na uczniach akademii','na golarzu Filipie')]
+      ['Co dzieje się z panem Kleksem co noc o północy?', opts('zmniejsza się jak niemowlę i śpi w maleńkim łóżeczku','zamienia się w szpaka','odlatuje na księżyc','czyta wszystkie sny uczniów')],
+      ['Do czego służy pompka powiększająca pana Kleksa?', opts('powiększa przedmioty (i samego pana Kleksa)','pompuje powietrze do baloników','wypompowuje wodę ze stawu','pompuje sok do pryszniców')],
+      ['Co przywraca panu Kleksowi pamięć po nocy?', opts('zielony płyn','pigułki na porost włosów','senne lusterko','pieg na nosie')]
+    ],1)[0];
+    intro(c, qi(v[0])); renderOptions(c, v[1], a, true);
+  }
+});
+Q.push({ lesson:2,
+  hint:'Pan Kleks <b>wyjmował prawe oko</b>, <b>wysyłał je na oględziny</b> – w koszyczku pod balonikiem albo wrzucając do wody: tak zobaczył, co zepsuło się w tramwaju, i znalazł pompkę na dnie stawu. Raz wysłał oko <b>na księżyc</b> (rozdz. 3).',
+  render(c,a){
+    intro(c, qi('Jak pan Kleks oglądał miejsca, których nie widział?'));
+    renderOptions(c, opts('wysyłał swoje oko na oględziny, np. w koszyczku pod balonikiem','pytał o wszystko Mateusza','patrzył przez długą lunetę','czytał o nich w senniku'), a, true);
+  }
+});
+openQ(2,{ q:'Opisz, jak wyglądał zwykły dzień w Akademii pana Kleksa (od pobudki do lekcji).',
+  model:'O <b>piątej</b> Mateusz otwierał śluzy w suficie i na nosy chłopców kapała woda. Potem był <b>prysznic</b> z wodą sodową z sokiem, o wpół do szóstej <b>śniadanie</b>, o szóstej <b>apel</b>, na którym pan Kleks całował każdego w czoło i zbierał <b>senne lusterka</b>, a o siódmej zaczynały się <b>lekcje</b> (np. kleksografia, przędzenie liter).',
+  points:['pobudka – woda kapiąca na nosy (o piątej)','co najmniej dwa kolejne punkty dnia (prysznic z sokiem, śniadanie, apel / senne lusterka)','lekcje (np. kleksografia, przędzenie liter, leczenie chorych sprzętów)'] });
+
+/* ---------- 3. Przygody ---------- */
+Q.push({ lesson:3,
+  hint:'Mateusz opowiadał, że jest <b>księciem</b>. Jako chłopiec <b>zastrzelił króla wilków</b>, a wilki się zemściły i opanowały pałac. Ranę wyleczył mu <b>doktor Paj-Chi-Wo</b> i dał mu <b>czapkę bogdychanów</b>. Na czapce brakowało <b>guzika</b>, więc Mateusz zamienił się w szpaka i nie mógł wrócić do ludzkiej postaci (rozdz. 2).',
+  render(c,a){
+    const v=pick([
+      ['Kim według swojej opowieści był kiedyś Mateusz?', opts('księciem','zwykłym wróblem','kucharzem króla','uczniem akademii')],
+      ['Kto wyleczył ranę Mateusza i dał mu czarodziejską czapkę?', opts('doktor Paj-Chi-Wo','pan Kleks','golarz Filip','inżynier Kopeć')],
+      ['Dlaczego Mateusz nie mógł z powrotem stać się człowiekiem?', opts('bo z czapki bogdychanów zginął guzik','bo pan Kleks mu zabronił','bo zapomniał zaklęcia','bo wilki zabrały mu czapkę')],
+      ['Czym zemściły się wilki w opowieści Mateusza?', opts('napadały na kraj i opanowały pałac króla','ukradły wszystkie konie','zjadły wszystkie guziki','porwały pana Kleksa')]
     ],1)[0];
     intro(c, qi(v[0])); renderOptions(c, v[1], a, true);
   }
 });
 Q.push({ lesson:3,
-  hint:'Na końcu książki <b>Alojzy</b> – lalka zrobiona przez Filipa – <b>niszczy sekrety pana Kleksa</b>. Za to pan Kleks go <b>zdemontował</b> (rozebrał na części).',
+  hint:'Adaś <b>zbierał guziki</b>, bo chciał odnaleźć zgubiony guzik od czapki Mateusza i przywrócić mu ludzką postać (rozdz. 3).',
+  render(c,a){
+    intro(c, qi('Dlaczego Adaś zbierał guziki?'));
+    renderOptions(c, opts('chciał znaleźć guzik od czapki Mateusza','pan Kleks robił z nich potrawy','to była kara za spóźnienie','chciał je sprzedać na targu'), a, true);
+  }
+});
+Q.push({ lesson:3,
+  hint:'Adaś nauczył się <b>unosić w powietrzu</b> jak pan Kleks, ale nie umiał kierować lotem. Wiatr zaniósł go do <b>psiego raju</b>, gdzie spotkał swojego psa <b>Reksa</b>. Wrócił po <b>12 dniach</b> razem z Mateuszem, który przyniósł mu list od pana Kleksa (rozdz. 6).',
+  render(c,a){
+    const v=pick([
+      ['Kogo Adaś spotkał w psim raju?', opts('swojego psa Reksa','psa pana Kleksa','króla wilków','Kota w butach')],
+      ['Jak Adaś dostał się do psiego raju?', opts('uniósł się w powietrze jak pan Kleks i zaniósł go wiatr','przeszedł przez furtkę w murze','zawiózł go tramwaj','zagwizdał na złotym gwizdku')],
+      ['Kto przyleciał po Adasia do psiego raju z listem od pana Kleksa?', opts('Mateusz','Reks','Anastazy','Królewna Żabka')]
+    ],1)[0];
+    intro(c, qi(v[0])); renderOptions(c, v[1], a, true);
+  }
+});
+Q.push({ lesson:3,
+  hint:'Podczas zabawy w poszukiwaczy skarbów Adaś i Artur trafili do bajki o <b>Królewnie Żabce</b> i znaleźli <b>złoty kluczyk</b>, który otwiera wszystkie zamki, i <b>złoty gwizdek</b>, który przenosi tam, gdzie się chce być (rozdz. 5).',
+  render(c,a){
+    intro(c, qi('Co znaleźli Adaś i Artur podczas zabawy w poszukiwaczy skarbów?'));
+    renderOptions(c, opts('złoty kluczyk i złoty gwizdek','skrzynię złotych monet','sznur pereł','skrzypce ze złotymi strunami'), a);
+  }
+});
+Q.push({ lesson:3,
+  hint:'Chłopcy z panem Kleksem odwiedzili <b>fabrykę dziur i dziurek</b> inżyniera <b>Bogumiła Kopcia</b>. Robiono tam np. dziurki od kluczy, dziurki w nosie, dziury na łokciach, a nawet dziury w niebie. Chłopcy dostali w prezencie <b>dziurki do obwarzanków</b> (rozdz. 7).',
   render(c,a){
     const v=Math.random()<.5;
-    intro(c, qi(v ? 'Co zniszczył Alojzy?' : 'Co pan Kleks zrobił z Alojzym, gdy ten zniszczył jego sekrety?'));
-    renderOptions(c, v ? opts('sekrety pana Kleksa','senne lusterka','fabrykę dziur i dziurek','czapkę Bogdychanów')
-      : opts('zdemontował go – rozebrał na części','zamienił go w szpaka','wysłał go do psiego raju','zrobił go swoim pomocnikiem'), a, true);
+    intro(c, qi(v ? 'Jaką fabrykę odwiedzili chłopcy z panem Kleksem?' : 'Co chłopcy dostali w prezencie w fabryce dziur i dziurek?'));
+    renderOptions(c, v ? opts('fabrykę dziur i dziurek','fabrykę czekolady','fabrykę zabawek','fabrykę atramentu')
+      : opts('dziurki do obwarzanków','dziurki od kluczy','dziury w niebie','dziurki do serów'), a);
   }
 });
 Q.push({ lesson:3,
-  hint:'Na końcu okazuje się, że pan Kleks to <b>guzik od czapki Bogdychanów</b>, który <b>doktor Paj-Chi-Wo</b> zamienił w człowieka.',
+  hint:'Po powrocie z fabryki akademię opanowały <b>muchy</b>. Powiększony pająk nie dał rady, więc pan Kleks wymyślił muchołapki z <b>baniek mydlanych z klejem</b> (rozdz. 7).',
   render(c,a){
-    intro(c, qi('Kim – jak się okazuje na końcu książki – był naprawdę pan Kleks?'));
-    renderOptions(c, opts('guzikiem od czapki Bogdychanów, zamienionym w człowieka','zaczarowanym królem wilków','bratem golarza Filipa','dorosłym Adasiem Niezgódką'), a, true);
+    intro(c, qi('Jak pan Kleks w końcu pokonał muchy, które opanowały akademię?'));
+    renderOptions(c, opts('wypuszczał bańki mydlane z klejem, do których przylepiały się muchy','wysłał na nie Mateusza','zamienił je w motyle i zjadł','otworzył wszystkie okna'), a, true);
   }
 });
 Q.push({ lesson:3,
-  hint:'Najpierw Mateusz przynosi Adasiowi <b>zaproszenie</b>. Adaś zaczyna naukę w akademii i przeżywa przygody (np. fabryka dziur i dziurek). Potem golarz Filip przyprowadza <b>Anatola i Alojzego</b>, Alojzy <b>niszczy sekrety</b>, a na końcu wychodzi na jaw, <b>kim jest pan Kleks</b>.',
+  hint:'Za jeden z najciekawszych snów pan Kleks uznał sen Adasia <b>„O siedmiu szklankach"</b>. Zapisał go w senniku i dał Adasiowi <b>dwie piegi</b> (rozdz. 4 i 8).',
+  render(c,a){
+    intro(c, qi('Który sen Adasia pan Kleks zapisał w senniku i nagrodził dwiema piegami?'));
+    renderOptions(c, opts('„O siedmiu szklankach"','„O szklanej górze"','„O latającym dywanie"','„O królu wilków"'), a);
+  }
+});
+Q.push({ lesson:3,
+  hint:'We śnie Adaś zebrał łyżką całą chmurę do szklanek: <b>deszcz, śnieg, grad, grzmot, błyskawicę i wiatr</b>. Do siódmej szklanki włożył <b>maleńkiego pana Kleksa</b>. Potem naprawdę znalazł maleńkiego pana Kleksa w szklance w kredensie (rozdz. 8 i 9).',
+  render(c,a){
+    intro(c, qi('Co Adaś zebrał do szklanek w śnie o siedmiu szklankach? Zaznacz <u>wszystkie</u>.'));
+    renderMulti(c, shuffle([
+      {text:'deszcz',correct:true},{text:'śnieg',correct:true},{text:'grzmot',correct:true},{text:'błyskawicę',correct:true},{text:'maleńkiego pana Kleksa',correct:true},
+      {text:'tęczę',correct:false},{text:'mleko',correct:false}
+    ]), a);
+  }
+});
+Q.push({ lesson:3,
+  hint:'Filip przyprowadził <b>Anatola i Alojzego w deszczową noc</b>. Pan Kleks ożywił lalkę, ale Alojzy zaczął <b>wszystko niszczyć</b>: wylał atrament, pociął poduszki, nasypał sadzy, przecinał druty. Mówił, że <b>ucieknie do Chin</b> (rozdz. 9 i 10).',
+  render(c,a){
+    intro(c, qi('Jak zachowywał się Alojzy w akademii?'));
+    renderOptions(c, opts('niszczył wszystko i dokuczał wszystkim','był najgrzeczniejszym uczniem','cały czas spał i nic nie robił','pomagał panu Kleksowi w kuchni'), a, true);
+  }
+});
+Q.push({ lesson:3,
+  hint:'Na wielką uroczystość pan Kleks <b>zaprosił sąsiednie bajki</b> i zaczął opowiadać <b>historię o księżycowych ludziach (Lunnach)</b>, którą zobaczyło jego oko. Opowieść przerwał <b>Alojzy</b>, który wpadł z kijem i przegonił gości (rozdz. 10).',
+  render(c,a){
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Jaką historię opowiadał pan Kleks gościom z bajek na wielkiej uroczystości?' : 'Kto przerwał uroczystość i przegonił gości z bajek?'));
+    renderOptions(c, v ? opts('historię o księżycowych ludziach','historię o królu wilków','historię o psim raju','historię o fabryce dziur')
+      : opts('Alojzy','golarz Filip','Anatol','król Niesfor'), a);
+  }
+});
+Q.push({ lesson:3,
+  hint:'Psi raj (rozdz. 6) → fabryka dziur i dziurek i wojna z muchami (rozdz. 7) → Filip przyprowadza Anatola i Alojzego (rozdz. 9) → Alojzy przerywa historię o księżycowych ludziach (rozdz. 10) → Alojzy niszczy sekrety w Wigilię (rozdz. 11).',
   render(c,a){
     intro(c, qi('Ułóż wydarzenia w kolejności, w jakiej dzieją się w książce.'));
-    renderOrder(c, ['Mateusz przynosi Adasiowi zaproszenie od pana Kleksa','Adaś zaczyna naukę w akademii','golarz Filip przyprowadza Anatola i Alojzego','Alojzy niszczy sekrety pana Kleksa','okazuje się, kim naprawdę jest pan Kleks'], a);
+    renderOrder(c, ['Adaś trafia do psiego raju','wycieczka do fabryki dziur i dziurek','Filip przyprowadza Anatola i Alojzego','Alojzy przerywa historię o księżycowych ludziach','Alojzy niszczy sekrety pana Kleksa'], a);
   }
 });
-openQ(3,{ q:'Opowiedz krótko niezwykłą historię Mateusza – kim był i jak stał się ptakiem?',
-  model:'Mateusz opowiadał, że jest <b>zaczarowanym księciem</b>. Jako chłopiec <b>zastrzelił króla wilków</b>, a wilki okrutnie się zemściły i opanowały pałac. Ranę na nodze wyleczył mu <b>doktor Paj-Chi-Wo</b>, który dał mu <b>czapkę Bogdychanów</b> – dzięki niej Mateusz <b>zamienił się w ptaka</b> i uciekł.',
-  points:['był (zaczarowanym) księciem','zastrzelił króla wilków / wilki się zemściły','zamienił się w ptaka dzięki czapce od doktora Paj-Chi-Wo'] });
-openQ(3,{ q:'Kim był Alojzy i jak jego pojawienie się w akademii wpłynęło na zakończenie książki?',
-  model:'Alojzy był <b>lalką skonstruowaną przez golarza Filipa</b>, a nie prawdziwym chłopcem. Niszczył wszystko i w końcu <b>zniszczył sekrety pana Kleksa</b>. Pan Kleks go zdemontował, a potem wyszło na jaw, że sam pan Kleks to <b>guzik od czapki Bogdychanów</b> zamieniony w człowieka.',
-  points:['Alojzy był lalką (zrobioną przez Filipa)','zniszczył sekrety pana Kleksa'] });
-openQ(3,{ q:'Które wydarzenie z książki najbardziej Ci się podobało? Opisz je krótko i napisz, dlaczego.',
-  model:'Każde prawdziwe wydarzenie z książki jest dobre, np. wizyta w <b>fabryce dziur i dziurek</b>, spotkanie z <b>Reksem w psim raju</b>, sen <b>„O siedmiu szklankach"</b>, lekcja <b>kleksografii</b>, opowieść Mateusza. Ważne, żeby opis zgadzał się z książką i żeby było <b>uzasadnienie</b>.',
-  points:['opisuje wydarzenie, które naprawdę jest w książce, ze szczegółem z fabuły','uzasadnia, dlaczego się podobało'] });
+openQ(3,{ q:'Opowiedz krótko historię, którą Mateusz opowiedział Adasiowi – kim był i jak stał się szpakiem?',
+  model:'Mateusz opowiadał, że jest <b>księciem</b>. Jako chłopiec <b>zastrzelił króla wilków</b>, a wilki się zemściły i opanowały pałac. Wcześniej <b>doktor Paj-Chi-Wo</b> wyleczył mu ranę i dał <b>czapkę bogdychanów</b>. Mateusz włożył ją i <b>zamienił się w szpaka</b>, ale z czapki zginął guzik, więc nie mógł wrócić do ludzkiej postaci.',
+  points:['był (według opowieści) księciem','zastrzelił króla wilków / wilki się zemściły','zamienił się w ptaka dzięki czapce od doktora Paj-Chi-Wo (zgubiony guzik)'] });
+openQ(3,{ q:'Opisz jedną przygodę z Akademii pana Kleksa, która najbardziej Ci się podobała, i napisz, dlaczego.',
+  model:'Każda prawdziwa przygoda z książki jest dobra, np. lot Adasia do <b>psiego raju</b> i spotkanie z Reksem, szukanie skarbów i <b>Królewna Żabka</b>, wycieczka do <b>fabryki dziur i dziurek</b>, <b>wojna z muchami</b>, sen <b>„O siedmiu szklankach"</b>, gra w piłkę-globus. Ważne, żeby opis zgadzał się z książką i żeby było <b>uzasadnienie</b>.',
+  points:['opisuje przygodę, która naprawdę jest w książce, ze szczegółem z fabuły','uzasadnia, dlaczego się podobała'] });
+
+/* ---------- 4. Zakończenie ---------- */
+Q.push({ lesson:4,
+  hint:'Z czasem <b>pan Kleks malał</b> z dnia na dzień, bo popsuła się jego pompka. Kurczyła się też cała akademia i park. Przestał łykać pigułki na porost włosów i <b>wyłysiał</b> (rozdz. 11).',
+  render(c,a){
+    intro(c, qi('Co działo się z panem Kleksem pod koniec książki?'));
+    renderOptions(c, opts('z dnia na dzień robił się coraz mniejszy','rósł coraz wyżej','zamieniał się w szpaka','stawał się coraz młodszy i weselszy'), a, true);
+  }
+});
+Q.push({ lesson:4,
+  hint:'W <b>Wigilię</b> pan Kleks urządził wieczerzę przy <b>choince</b>. Wtedy <b>Alojzy</b> wykradł <b>sekrety pana Kleksa</b> (porcelanowe tabliczki z chińskim pismem od doktora Paj-Chi-Wo) i <b>zdeptał je na proszek</b> (rozdz. 11).',
+  render(c,a){
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Co zniszczył Alojzy w Wigilię?' : 'Kiedy Alojzy zniszczył sekrety pana Kleksa?'));
+    renderOptions(c, v ? opts('sekrety pana Kleksa – tabliczki z chińskim pismem','senne lusterka','szpital chorych sprzętów','czapkę bogdychanów')
+      : opts('w Wigilię Bożego Narodzenia','w pierwszy dzień wiosny','w dniu przyjazdu do akademii','w Nowy Rok'), a, true);
+  }
+});
+Q.push({ lesson:4,
+  hint:'Pan Kleks <b>rozkręcił Alojzego na części</b> i zamknął w <b>walizce</b>. Z utratą sekretów <b>stracił wszystkie umiejętności</b>: gotowanie szkiełek, latanie, powiększanie, leczenie sprzętów (rozdz. 11).',
+  render(c,a){
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Co pan Kleks zrobił z Alojzym, gdy ten zniszczył sekrety?' : 'Co stało się z panem Kleksem, gdy stracił swoje sekrety?'));
+    renderOptions(c, v ? opts('rozkręcił go na części i zamknął w walizce','zamienił go w szpaka','wysłał go do psiego raju','zrobił go swoim pomocnikiem')
+      : opts('stracił wszystkie swoje niezwykłe umiejętności','stał się jeszcze potężniejszy','zamienił się w Filipa','odleciał na księżyc'), a, true);
+  }
+});
+Q.push({ lesson:4,
+  hint:'Wściekły <b>Filip</b> przyszedł po Anatola i Alojzego. Zobaczył lalkę w walizce i <b>brzytwą obciął płomyki świec na choince</b>, aż zrobiło się zupełnie ciemno (rozdz. 11).',
+  render(c,a){
+    intro(c, qi('Co zrobił golarz Filip, gdy zobaczył rozkręconego Alojzego?'));
+    renderOptions(c, opts('obciął brzytwą wszystkie płomyki świec na choince','zabrał pana Kleksa do miasta','podpalił akademię','zamknął chłopców w piwnicy'), a, true);
+  }
+});
+Q.push({ lesson:4,
+  hint:'Pan Kleks kazał <b>Anastazemu</b> o północy <b>otworzyć bramę</b>, a klucz <b>wrzucić do stawu</b>. Na tym miała się zakończyć bajka o akademii. Chłopcy wrócili do swoich domów (rozdz. 11).',
+  render(c,a){
+    intro(c, qi('Co Anastazy miał zrobić o północy w Wigilię?'));
+    renderOptions(c, opts('otworzyć bramę, a klucz wrzucić do stawu','zgasić wszystkie światła','zadzwonić dzwonkiem na apel','wypuścić Mateusza z klatki'), a, true);
+  }
+});
+Q.push({ lesson:4,
+  hint:'Na końcu wszystko się zmniejszyło: <b>gmach akademii</b> zamienił się w <b>klatkę</b> z Mateuszem, <b>park</b> w zielony <b>dywan</b>, <b>mur</b> w <b>bibliotekę</b>, a <b>furtki</b> do bajek w <b>grzbiety książek</b> (rozdz. 12).',
+  render(c,a){
+    const v=pick([
+      ['W co na końcu zamienił się gmach akademii?', opts('w klatkę, w której siedział Mateusz','w pudełko po cygarach','w kałamarz','w zamek z piasku')],
+      ['W co na końcu zamieniły się furtki do bajek w murze?', opts('w grzbiety książek w bibliotece','w drzwi do szafy','w kolorowe szkiełka','w guziki')],
+      ['W co na końcu zamienił się park akademii?', opts('w zielony dywan haftowany w drzewa i kwiaty','w doniczkę z kwiatkiem','w obraz na ścianie','w pustynię')]
+    ],1)[0];
+    intro(c, qi(v[0])); renderOptions(c, v[1], a, true);
+  }
+});
+Q.push({ lesson:4,
+  hint:'Pan Kleks zmalał do wielkości orzecha laskowego i <b>zamienił się w guzik</b>. To był <b>guzik od czapki bogdychanów</b>, który doktor Paj-Chi-Wo kiedyś zamienił w człowieka (rozdz. 12).',
+  render(c,a){
+    intro(c, qi('Kim – jak się okazuje na końcu książki – był naprawdę pan Kleks?'));
+    renderOptions(c, opts('guzikiem od czapki bogdychanów, zamienionym w człowieka','zaczarowanym królem wilków','bratem golarza Filipa','dorosłym Adasiem Niezgódką'), a, true);
+  }
+});
+Q.push({ lesson:4,
+  hint:'Mateusz chwycił guzik w dziób i <b>zamienił się w człowieka</b>, siwiejącego pana koło czterdziestki. Powiedział, że <b>historię o królu wilków zmyślił</b>, a on sam jest <b>autorem historii o panu Kleksie</b>. Zamknął książkę „Akademia pana Kleksa" i postawił ją na półce (rozdz. 12).',
+  render(c,a){
+    const v=Math.random()<.5;
+    intro(c, qi(v ? 'Kim okazał się Mateusz, gdy na końcu zamienił się w człowieka?' : 'Co Mateusz powiedział na końcu o swojej historii o królu wilków?'));
+    renderOptions(c, v ? opts('autorem historii o panu Kleksie','królem, który wrócił na tron','ojcem Adasia','doktorem Paj-Chi-Wo')
+      : opts('że ją zmyślił','że wszystko było prawdą','że opowiedział mu ją pan Kleks','że przeczytał ją w senniku'), a, true);
+  }
+});
+openQ(4,{ q:'Opisz, jak kończy się „Akademia pana Kleksa". Co stało się z panem Kleksem, z akademią i z Mateuszem?',
+  model:'W Wigilię Alojzy zniszczył sekrety pana Kleksa i pan Kleks stracił swoje umiejętności. Akademia i pan Kleks <b>zmniejszali się</b>, aż akademia zamieniła się w <b>klatkę</b>, park w dywan, a mur w bibliotekę. Pan Kleks <b>zamienił się w guzik</b> od czapki bogdychanów. Mateusz wziął guzik i <b>stał się człowiekiem</b> – okazał się <b>autorem historii o panu Kleksie</b>.',
+  points:['pan Kleks zmniejszył się i zamienił w guzik (od czapki bogdychanów)','akademia przestała istnieć / zmniejszyła się (klatka, dywan, biblioteka)','Mateusz stał się człowiekiem i okazał się autorem historii'] });
+openQ(4,{ q:'Czy chciałbyś lub chciałabyś uczyć się w Akademii pana Kleksa? Napisz, dlaczego, i podaj przykład z książki.',
+  model:'Każda odpowiedź (tak albo nie) jest dobra, jeśli jest <b>uzasadniona przykładem z książki</b>, np. ciekawe lekcje (kleksografia, piłka-globus), przygody w bajkach, potrawy z kolorowych szkiełek, ale też pobudka wodą o piątej rano albo kłopoty z Alojzym.',
+  points:['jasno odpowiada tak albo nie','uzasadnia przykładem, który naprawdę jest w książce'] });
 
 /* =========================================================
    STEROWANIE
@@ -903,10 +1081,10 @@ const PRAISE = ['Świetnie! ✅','Brawo! 🎉','Dokładnie tak! 👍','Super! �
 
 const state = { list:[], index:0, score:0, perLesson:{}, review:[] };
 
-// Pełny sprawdzian: z każdej części tyle pytań, ile w planie, w tym jedno pisemne.
+// Pełny sprawdzian: z każdej części tyle pytań, ile w planie (pisemne – według FULL_OPEN).
 // Razem 20 zadań (3 pisemne) – tyle, żeby zmieścić się w 30 minutach.
-const FULL_PLAN = {1:7, 2:6, 3:7};
-const FULL_OPEN = {1:1, 2:1, 3:1};
+const FULL_PLAN = {1:5, 2:5, 3:5, 4:5};
+const FULL_OPEN = {1:1, 2:0, 3:1, 4:1};
 const FULL_MINUTES = 30;
 function buildFull(){
   const list=[];
